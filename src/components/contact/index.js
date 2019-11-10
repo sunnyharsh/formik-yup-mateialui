@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import ContactForm from "../forms/index.contactForm";
 import { connect } from "react-redux";
-import { contactData } from "../../store/actions/index.action";
-import {
-  withRouter
-} from 'react-router-dom'
+import { contactData, contactShow } from "../../store/actions/index.action";
+import { withRouter } from 'react-router-dom'
  class Contact extends Component {
    constructor(props){
      super(props);
@@ -13,7 +11,11 @@ import {
         this.props.$contactData(values)
         this.props.history.push('/print')
     };
+    componentDidMount(){
+      this.props.$contactShow({isList:true})
+    }
   render() {
+    
     return (
       <React.Fragment>   
         <ContactForm
@@ -24,13 +26,13 @@ import {
     )
   }
 }
-
-const mapState = () => {
+const mapState = ({contactShow}) => {
     return {
-       
+       _contactShow: contactShow
     };
 };
 const mapDispatch = dispatchEvent => ({
+    $contactShow: values => dispatchEvent(contactShow(values)),
     $contactData: values => dispatchEvent(contactData(values))
 });
 export default connect(
